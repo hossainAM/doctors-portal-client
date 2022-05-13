@@ -10,7 +10,7 @@ const MakeAppointment = () => {
            </div>
            <div className='flex flex-1 flex-col justify-center items-center lg:items-start'>
                 <h3 className="text-xl text-primary py-4 font-bold">Appointment</h3>
-                <h2 className="text-3xl text-white">Make an AppointMent Today</h2>
+                <h2 className="text-3xl text-white">Make an Appointment Today</h2>
                 <p className="py-6 text-white text-center lg:text-left ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit sit delectus tempora dolorum eum magnam fugit ipsum, odit, incidunt cupiditate nobis iusto adipisci quos eaque architecto ut ullam nostrum est maxime totam! Officia necessitatibus doloremque, porro iusto officiis assumenda accusantium.</p>
             <ButtonPrimary>Get Started</ButtonPrimary>
            </div>
