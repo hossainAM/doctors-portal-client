@@ -1,15 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { NavLink } from 'react-router-dom';
+import auth from '../../firebase.init';
+import { signOut } from "firebase/auth";
 
 const Header = () => {
+    const [user] = useAuthState(auth);
+
+     //Sign out
+     const handleSignOut = () => {
+         signOut(auth);
+     }
+
     const menuItems = <>
-        <li><Link to='/home'>Home</Link></li>
-        <li><Link to='/about'>About</Link></li>
-        <li><Link to='/appointment'>Appointment</Link></li>
-        <li><Link to='/reviews'>Reviews</Link></li>
-        <li><Link to='/contact'>Contact</Link></li>
-        <li><Link to='/login'>Login</Link></li>
+        <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/'>Home</NavLink></li>
+        <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/about'>About</NavLink></li>
+        <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/appointment'>Appointment</NavLink></li>
+        <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/reviews'>Reviews</NavLink></li>
+        <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/contact'>Contact</NavLink></li>
+        {user 
+        ? 
+        <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/login' onClick={handleSignOut}>Sign Out</NavLink></li>
+        :
+        <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/login'>Login</NavLink></li>
+        }
+        <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/signup'>Sign Up</NavLink></li>
     </>
+
     return (
         <div className="navbar bg-primary">
             <div className="navbar-start w-50 justify-center">
