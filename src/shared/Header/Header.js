@@ -18,6 +18,9 @@ const Header = () => {
         <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/appointment'>Appointment</NavLink></li>
         <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/reviews'>Reviews</NavLink></li>
         <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/contact'>Contact</NavLink></li>
+        {
+            user && <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/dashboard'>Dashboard</NavLink></li>
+        }
         {user 
         ? 
         <li><NavLink style={({ isActive }) => isActive ? {textDecoration: 'underline'} : undefined} to='/login' onClick={handleSignOut}>Sign Out</NavLink></li>
@@ -45,7 +48,12 @@ const Header = () => {
                    {menuItems}
                 </ul>
             </div>
+            <div className='navbar-end'>
+                <label tabindex="1" for="dashboard-sidebar" className="btn btn-ghost lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+                </label>
             </div>
+        </div>
     );
 };
 

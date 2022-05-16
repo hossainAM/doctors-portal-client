@@ -8,12 +8,8 @@ import toast from 'react-hot-toast';
 
 const SignUp = () => {
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
-    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
     const navigate = useNavigate();
-    // const nameRef = useRef('');
-    // const emailRef = useRef('');
-    // const passRef = useRef('');
 
     const [
         createUserWithEmailAndPassword,
@@ -24,12 +20,14 @@ const SignUp = () => {
         sendEmailVerification: true
     });
 
+      const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+
     //Email verification
     const [sendEmailVerification] = useSendEmailVerification(auth);
 
     let errorMessage;
-    if(error || gError ||updateError){
-        errorMessage =  <p className='text-red-500'>Error: {error?.message}</p>
+    if(error || gError || updateError){
+        errorMessage =  <p className='text-red-500'>Error: {error?.message} || {gError?.message} || {updateError?.message}</p>
     }
 
     useEffect(() => {
@@ -44,10 +42,6 @@ const SignUp = () => {
 
     const onSubmit = async data => {
         console.log(data);
-        // const name = nameRef.current.value;
-        // const email = emailRef.current.value;
-        // const password = passRef.current.value;
-
         //Create user
         await createUserWithEmailAndPassword(data.email, data.password);
 
@@ -66,7 +60,6 @@ const SignUp = () => {
                                 <span className="label-text">Name</span>
                             </label>
                             <input
-                                // ref={nameRef}
                                 type="text"
                                 placeholder="Your Name"
                                 className="input input-bordered w-full max-w-xs"
@@ -86,7 +79,6 @@ const SignUp = () => {
                                 <span className="label-text">Email</span>
                             </label>
                             <input
-                                // ref={emailRef}
                                 type="email"
                                 placeholder="Your Email"
                                 className="input input-bordered w-full max-w-xs"
@@ -111,7 +103,6 @@ const SignUp = () => {
                                 <span className="label-text">Password</span>
                             </label>
                             <input
-                                // ref={passRef}
                                 type="password"
                                 placeholder="Password"
                                 className="input input-bordered w-full max-w-xs"

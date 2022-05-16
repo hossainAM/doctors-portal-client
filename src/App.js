@@ -10,6 +10,10 @@ import Header from './shared/Header/Header'
 import Appointment from './pages/Appointment/Appointment'
 import SignUp from './pages/Login/SignUp'
 import RequiredAuth from '../src/pages/Login/RequireAuth'
+import Dashboard from './pages/Dashboard/Dashboard';
+import MyAppointment from './pages/Dashboard/MyAppointment';
+import MyReviews from './pages/Dashboard/MyReviews';
+import MyHistory from './pages/Dashboard/myHistory';
 
 const App = () => {
   return (
@@ -21,6 +25,13 @@ const App = () => {
       <Route path='/appointment' element={<RequiredAuth>
         <Appointment/>
       </RequiredAuth>}/>
+      <Route path='/dashboard' element={<RequiredAuth>
+        <Dashboard/>
+      </RequiredAuth>}>
+        <Route index element={<MyAppointment/>}/>
+        <Route path="myreviews" element={<MyReviews/>}/>
+        <Route path="history" element={<MyHistory/>}/>
+      </Route>
       <Route path='/reviews' element={<Reviews/>}/>
       <Route path='/contact' element={<Contact/>}/>
       <Route path='/login' element={<Login/>}/>
