@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useCreateUserWithEmailAndPassword, useSendEmailVerification, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import Loader from '../../shared/Loader/Loader';
 import toast from 'react-hot-toast';
+import useToken from '../../Hooks/useToken';
 
 const SignUp = () => {
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
@@ -20,7 +21,9 @@ const SignUp = () => {
         sendEmailVerification: true
     });
 
-      const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
+
+    const [token] = useToken(user || gUser);
 
     //Email verification
     const [sendEmailVerification] = useSendEmailVerification(auth);
@@ -30,18 +33,16 @@ const SignUp = () => {
         errorMessage =  <p className='text-red-500'>Error: {error?.message} || {gError?.message} || {updateError?.message}</p>
     }
 
-    useEffect(() => {
-        if (user || gUser) {
-            navigate('/')
-        }
-    }, [navigate, user, gUser])
+    if (token) {
+        navigate('/appointment')
+    }
 
     if(loading || gLoading || updating){
         return <Loader></Loader>
     }
 
     const onSubmit = async data => {
-        console.log(data);
+        // console.log(data);
         //Create user
         await createUserWithEmailAndPassword(data.email, data.password);
 

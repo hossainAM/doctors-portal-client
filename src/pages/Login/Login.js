@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle, useSendPasswordResetEmail } from 'react-firebase-hooks/auth'
 import auth from '../../firebase.init'
 import Loader from '../../shared/Loader/Loader'
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useToken from '../../Hooks/useToken';
 // import toast from 'react-hot-toast';
 
 const Login = () => {
@@ -11,8 +12,6 @@ const Login = () => {
      const { register, formState: { errors }, handleSubmit } = useForm();
      const navigate = useNavigate();
      const location = useLocation();
-    //  const emailRef = useRef('');
-    //  const passRef = useRef('');
 
      const [
          signInWithEmailAndPassword,
@@ -23,7 +22,17 @@ const Login = () => {
 
     //  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
 
+    const [token] = useToken(user || gUser)
+
     let from = location.state?.from?.pathname || "/";
+
+    useEffect(() => {
+        if (token) {
+            navigate(from, {
+                replace: true
+            });
+        }
+    }, [token, from, navigate])
 
     let errorMessage;
     if(error || gError){
@@ -34,16 +43,7 @@ const Login = () => {
         return <Loader></Loader>
     }
 
-    if(user || gUser) {
-        navigate(from, {
-            replace: true
-        });
-    }
-
     const onSubmit = data => {
-        // console.log(data)
-        // const email = emailRef.current.value;
-        // const password = passRef.current.value;
         signInWithEmailAndPassword(data.email, data.password);
     };
 
