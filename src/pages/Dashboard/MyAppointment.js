@@ -1,7 +1,7 @@
 import { signOut } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 
 const MyAppointment = () => {
@@ -11,7 +11,9 @@ const MyAppointment = () => {
 
     useEffect(() => {
        if(user) {
+        //    console.log(user)
          fetch(`http://localhost:5000/booking?patient=${user.email}`, {
+
              method: 'GET',
              headers: {
                  'authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -20,17 +22,18 @@ const MyAppointment = () => {
         .then(res => {
             // console.log('response', res);
             if(res.status === 401 || res.status === 403){
-                navigate('/');
                 signOut(auth);
                 localStorage.removeItem('accessToken');
+                navigate('/');
             }
-            return res.json() //return as multi line is used
+            return res.json(); 
         })
         .then(data => {
+            // console.log(data)
             setAppointments(data)
         })
        }
-    }, [user])
+    }, [user, navigate])
     return (
         <div>
             <h2>My Appointments: {appointments.length}</h2>
@@ -43,6 +46,7 @@ const MyAppointment = () => {
                         <th>Date</th>
                         <th>Time</th>
                         <th>Treatment</th>
+                        <th>Payment</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -54,6 +58,8 @@ const MyAppointment = () => {
                                 <td>{a.date}</td>
                                 <td>{a.slot}</td>
                                 <td>{a.treatment}</td>
+                                <td>{(a.price && !a.paid) && <Link to={`/dashboard/payment/${a._id}`} className='btn btn-xs btn-success'>Pay</Link>}</td>
+                                <td>{(a.price && a.paid) && <span className='text-success'>Paid</span>}</td>
                             </tr>)
                         }
                     </tbody>

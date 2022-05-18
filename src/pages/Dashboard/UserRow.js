@@ -6,7 +6,7 @@ import auth from '../../firebase.init';
 const UserRow = ({user, refetch}) => {
     const {email, role} = user;
 
-    const makeAdmin = (user) => {
+    const makeAdmin = () => {
         fetch(`http://localhost:5000/user/admin/${email}`, {
             method: 'PUT',
             headers: {
@@ -14,11 +14,10 @@ const UserRow = ({user, refetch}) => {
             }
         })
         .then(res => {
-            if(res.status === 403) {
-                signOut(auth);
-                localStorage.removeItem('accessToken');
-                return res.json();
-            }
+             if (res.status === 403) {
+                 toast.error('Failed to Make an admin');
+             }
+             return res.json();
         })
         .then(data => {
             console.log(data)

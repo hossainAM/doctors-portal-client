@@ -1,0 +1,52 @@
+import React from 'react';
+import { useQuery } from 'react-query';
+import Loader from '../../shared/Loader/Loader';
+import DoctorRow from './DoctorRow';
+
+const ManageDoctors = () => {
+      const {
+        data: doctors,
+        isLoading,
+        refetch,
+    } = useQuery('users', () => fetch('http://localhost:5000/doctor', {
+        headers: {
+            'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+    }).then(res => res.json()));
+
+    if(isLoading) {
+        return <Loader></Loader>
+    }
+    return (
+        <div>
+            <h2 className='text-2xl'>Manage Doctors: {doctors.length}</h2>
+            <div class="overflow-x-auto">
+                <table class="table w-full">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Avatar</th>
+                            <th>Name</th>
+                            <th>Speciality</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            doctors.map((doctor, index) => <DoctorRow
+                                key={doctor._key}
+                                doctor={doctor}
+                                index={index}
+                                refetch={refetch}
+                                // setDeletingDoctor={setDeletingDoctor}
+                            ></DoctorRow>)
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    );
+};
+
+export default ManageDoctors;

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import auth from '../../firebase.init';
 
 const BookingModal = ({date, treatment, setTreatment, refetch }) => {
-    const {_id, name, slots} = treatment;
+    const {_id, name, slots, price} = treatment;
     const [user] = useAuthState(auth);
     const formatedDate = format(date, 'PP');
     // console.log(slots)
@@ -21,6 +21,7 @@ const BookingModal = ({date, treatment, setTreatment, refetch }) => {
             treatment: name,
             date: formatedDate,
             slot,
+            price,
             patientEmail: user.email,
             patientName: user.displayName,
             phone: event.target.phone.value,
@@ -35,7 +36,7 @@ const BookingModal = ({date, treatment, setTreatment, refetch }) => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
+            // console.log(data)
             if(data.success) {
                 toast(`Appointment is set, ${formatedDate} at ${slot}`)
             }
